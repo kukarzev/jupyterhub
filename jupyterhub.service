@@ -1,0 +1,18 @@
+# this file should be in /etc/systemd/system/
+# make sure that old upstart script is
+# cleaned out - /etc/init/jupyterhub.conf
+#
+[Unit]
+Description=jupyterhub
+After=syslog.target network.target
+
+[Service]
+Restart=always
+Type=forking
+User=jupyterhub
+Group=shadow
+ExecStart=/bin/bash -ec 'source /software/jupyterhub/venv/bin/activate;hash -r;jupyterhub -f /software/jupyterhub/jupyterhub_config.py $@ &'
+WorkingDirectory=/software/jupyterhub
+
+[Install]
+WantedBy=multi-user.target
